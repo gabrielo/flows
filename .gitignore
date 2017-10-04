@@ -1,0 +1,6 @@
+*~
+.DS_Store
+capture
+.ipynb_checkpoints/
+localconfig
+demo
