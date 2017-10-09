@@ -1,5 +1,4 @@
-var centroidGl;
-var pointFlowGl;
+var flowGl;
 var map;
 var gl;
 var canvasLayer;
@@ -7,7 +6,6 @@ var mapMatrix = new Float32Array(16);
 var pixelsToWebGLMatrix = new Float32Array(16);
 var gui;
 var timeSlider;
-var centroidGeoJson;
 
 var mapOptions = {
   zoom: 2,
@@ -43,10 +41,8 @@ function update() {
   var currentYear = new Date(currentTime).getUTCFullYear();
   var start = new Date(currentYear + '-01-01');
   var end = new Date(currentYear + '-12-31');
-  //console.log(start);
-  //console.log(end);
   var t = 1.0 - (end.getTime() - currentTime) / (end.getTime() - start.getTime());
-  pointFlowGl.draw(mapMatrix, {'t': t});
+  flowGl.draw(mapMatrix, {'t': t});
   timeSlider.animate();
 }
 
@@ -81,7 +77,6 @@ function initTimeSlider(opts) {
 
 function init() {
   var mapDiv = document.getElementById('map-div');
-  var dataUrl = 'centroids.geojson';
 
   map = new google.maps.Map(mapDiv, mapOptions);
   canvasLayerOptions.map = map;
@@ -92,7 +87,18 @@ function init() {
   gl = canvasLayer.canvas.getContext('experimental-webgl');
   gl.getExtension("OES_standard_derivatives");
 
-  pointFlowGl = new PointFlowGl(gl);
+  flowGl = new FlowGl(gl);
+  flowGl.image = new Image();
+  flowGl.image.src = '../data/points.png';
+  flowGl.image.onload = function() {
+    var points = [];
+    for (var i = 0; i < 220; i++) {
+      points.push(i/219);
+    }
+    flowGl.setBuffer(new Float32Array(points));    
+  }
+
+  /*
   pointFlowGl.getGeoJson(dataUrl, function(data) {
     var points = [];
     for (var i = 0; i < data["features"].length; i++) {
@@ -111,19 +117,8 @@ function init() {
     console.log(points);
     pointFlowGl.setBuffer(new Float32Array(points));
   });
-
-  centroidGl = new CentroidGl(gl);
-/*  centroidGl.getGeoJson(dataUrl, function(data) {
-    centroidGeoJson = data;
-    var points = []
-    for (var i = 0; i < data["features"].length; i++) {
-      var point = LatLongToPixelXY(data["features"][i]["geometry"]["coordinates"][1], data["features"][i]["geometry"]["coordinates"][0])
-      points.push(point.x);
-      points.push(point.y);
-    }
-    centroidGl.setBuffer(new Float32Array(points));
-  });
 */
+
   //gui = new dat.GUI();
   //gui.add(gtdGl, 'show0Casualties');
 
