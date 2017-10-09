@@ -1,14 +1,18 @@
 //flow-gl.js
 
 var flowVertexShader = '' +
-'  attribute float a_idx;\n' +
+'  attribute vec2 a_idx;\n' +
 '  uniform sampler2D u_image;\n' +
 '  uniform mat4 u_map_matrix;\n' +
 '  void main() {\n' +
-'    vec4 color = texture2D(u_image, vec2(0.0,a_idx));\n' + 
+'    vec4 color = texture2D(u_image, a_idx);\n' + 
 '    vec2 pos = vec2(255.*(color.r + 255.*color.b), (255.*color.g + color.a));\n' +
 '    gl_Position = u_map_matrix * vec4(pos.x, pos.y, 0.0, 1.0);\n' +
-'    gl_PointSize = 25.0;' +
+'    if (a_idx.x == 0.0) {\n' +
+'      gl_PointSize = 50.0;\n' +
+'    } else {\n' +
+'      gl_PointSize = 10.0;\n' +
+'    }\n' + 
 '  }\n';
 
 var flowFragmentShader = '' + 
@@ -25,7 +29,7 @@ var FlowGl = function FlowGl(gl) {
     this.gl = gl;
     this.program = createProgram(gl, flowVertexShader, flowFragmentShader);
     this.buffer = {
-        'numAttributes': 1,
+        'numAttributes': 2,
         'count': 0,
         'buffer': null,
         'ready': false
@@ -65,7 +69,7 @@ FlowGl.prototype.draw = function draw(transform, options) {
         gl.useProgram(program.program);
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer.buffer);
         gl.uniformMatrix4fv(program.u_map_matrix, false, transform);
-        bindAttribute(gl, program.program, 'a_idx', 1, gl.FLOAT, false, this.buffer.numAttributes*4, 0);    
+        bindAttribute(gl, program.program, 'a_idx', 2, gl.FLOAT, false, this.buffer.numAttributes*4, 0);    
 
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, this.texture);

@@ -92,8 +92,12 @@ function init() {
   flowGl.image.src = '../data/points.png';
   flowGl.image.onload = function() {
     var points = [];
-    for (var i = 0; i < 220; i++) {
-      points.push(i/219);
+    for (var y = 0; y < 220; y++) {
+      for (var x = 0; x < 220; x++) {
+        points.push(x/219);        
+        points.push(y/219);        
+      }
+
     }
     flowGl.setBuffer(new Float32Array(points));    
   }
