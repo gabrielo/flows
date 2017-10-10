@@ -36,6 +36,17 @@ var FlowGl = function FlowGl(gl) {
     };
 }
 
+FlowGl.prototype.getJson = function(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onload = function() {
+        var data = JSON.parse(this.responseText);
+        callback(data);
+    }
+    xhr.send();
+
+}
+
 FlowGl.prototype.setBuffer = function(data) {
     this.data = data;
     this.buffer.count = data.length / this.buffer.numAttributes;
