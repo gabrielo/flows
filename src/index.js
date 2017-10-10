@@ -102,6 +102,42 @@ function init() {
     flowGl.setBuffer(new Float32Array(points));    
   }
 
+  flowGl.getJson('../data/totals-1984.json', function(data) {
+    function getRandomEpoch(year) {
+      var month = getRandomIntInclusive(1,12);
+      var day = getRandomIntInclusive(1,28);
+      var date = new Date(year.toString() + '-' + month.toString() + '-' + day.toString());
+      return date.getTime()/1000.0;
+    } 
+    function getRandomIntInclusive(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+    }
+
+    function doSomething(data) {
+      var points = [];
+      for (var i = 0; i < data.length; i++) {
+        for (var j = 0; j < data[i]['delta']; j++) {
+          points.push(data[i]['org_idx']);
+          points.push(data[i]['dst_idx']);
+          points.push(getRandomIntInclusive(1,255));
+          points.push(getRandomIntInclusive(1,255));        
+          points.push(getRandomEpoch(1984));
+          points.push(getRandomEpoch(1984));
+         
+        }
+
+      }
+      return points;
+    }
+
+    var t0 = performance.now();
+    var points = doSomething(data);
+    var t1 = performance.now();
+    console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
+    console.log(points.length);
+  })
   /*
   pointFlowGl.getGeoJson(dataUrl, function(data) {
     var points = [];
