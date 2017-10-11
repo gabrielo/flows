@@ -1,4 +1,4 @@
-var flowGl;
+var centroidGl;
 var map;
 var gl;
 var canvasLayer;
@@ -42,7 +42,7 @@ function update() {
   var start = new Date(currentYear + '-01-01');
   var end = new Date(currentYear + '-12-31');
   var t = 1.0 - (end.getTime() - currentTime) / (end.getTime() - start.getTime());
-  flowGl.draw(mapMatrix, {'t': t});
+  centroidGl.draw(mapMatrix, {'t': t});
   timeSlider.animate();
 }
 
@@ -87,10 +87,10 @@ function init() {
   gl = canvasLayer.canvas.getContext('experimental-webgl');
   gl.getExtension("OES_standard_derivatives");
 
-  flowGl = new FlowGl(gl);
-  flowGl.image = new Image();
-  flowGl.image.src = '../data/points.png';
-  flowGl.image.onload = function() {
+  centroidGl = new CentroidGl(gl);
+  centroidGl.image = new Image();
+  centroidGl.image.src = '../data/points.png';
+  centroidGl.image.onload = function() {
     var points = [];
     for (var y = 0; y < 220; y++) {
       for (var x = 0; x < 220; x++) {
@@ -99,10 +99,10 @@ function init() {
       }
 
     }
-    flowGl.setBuffer(new Float32Array(points));    
+    centroidGl.setBuffer(new Float32Array(points));    
   }
 
-  flowGl.getJson('../data/totals-1984.json', function(data) {
+/*  flowGl.getJson('../data/totals-1984.json', function(data) {
     function getRandomEpoch(year) {
       var month = getRandomIntInclusive(1,12);
       var day = getRandomIntInclusive(1,28);
@@ -138,27 +138,7 @@ function init() {
     console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
     console.log(points.length);
   })
-  /*
-  pointFlowGl.getGeoJson(dataUrl, function(data) {
-    var points = [];
-    for (var i = 0; i < data["features"].length; i++) {
-      var startPoint = LatLongToPixelXY(data["features"][i]["geometry"]["coordinates"][1], data["features"][i]["geometry"]["coordinates"][0]);
-      for (var j = 0; j < data["features"].length; j++) {
-        if (j != i) {
-          var endPoint = LatLongToPixelXY(data["features"][j]["geometry"]["coordinates"][1], data["features"][j]["geometry"]["coordinates"][0]);
-          var midPoint = {'x': 0.5*(startPoint.x + endPoint.x), 'y': 0.5*(startPoint.y + endPoint.y) };
-          points.push(startPoint.x, startPoint.y);
-          points.push(endPoint.x, endPoint.y);
-//          points.push(midPoint.x, midPoint.y);
-          points.push(126.0, 0.0);
-        }
-      }
-    }
-    console.log(points);
-    pointFlowGl.setBuffer(new Float32Array(points));
-  });
 */
-
   //gui = new dat.GUI();
   //gui.add(gtdGl, 'show0Casualties');
 
