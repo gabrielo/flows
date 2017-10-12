@@ -10,6 +10,7 @@ var flowVertexShader = '' +
 '  uniform float u_epoch;\n' +
 '  uniform sampler2D u_image;\n' +
 '  uniform mat4 u_map_matrix;\n' +
+'  varying float v_t;\n' + 
 '  vec2 bezier(float t, vec2 p0, vec2 p1, vec2 p2) {\n' +
 '    return (1.0-t)*(1.0-t)*p0 + 2.0*(1.0-t)*t*p1 + t*t*p2;\n' +
 '  }\n' +
@@ -28,6 +29,7 @@ var flowVertexShader = '' +
 '      vec2 pos = bezier(t, org_pos, (rnd_org_pos + rnd_dst_pos)* 0.5, dst_pos);\n' +
 '      //vec2 pos = org_pos;\n' +
 '      position = u_map_matrix * vec4(pos.x, pos.y, 0.0, 1.0);\n' +
+'      v_t = t;\n' +
 '    }\n' +
 '    gl_Position = position;\n' +
 '    gl_PointSize = 2.0;\n' +
@@ -35,9 +37,11 @@ var flowVertexShader = '' +
 
 var flowFragmentShader = '' + 
 '  precision mediump float;\n' +
+'  varying float v_t;\n' + 
 '  void main() {\n' +
-'    vec3 color = vec3(1.0, 0.0, 0.0);\n' +
-'    gl_FragColor = vec4(color, 1.);\n' +
+'    vec4 colorStart = vec4(.94,.56,.21,1.0);\n' +
+'    vec4 colorEnd = vec4(.71,0.09,0.05,1.0);\n' +
+'    gl_FragColor = mix(colorStart, colorEnd, v_t);\n' +
 '  }\n';
 
 var FlowGl = function FlowGl(gl) {
