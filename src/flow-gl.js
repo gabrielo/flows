@@ -32,7 +32,7 @@ var flowVertexShader = '' +
 '      v_t = t;\n' +
 '    }\n' +
 '    gl_Position = position;\n' +
-'    gl_PointSize = 2.0;\n' +
+'    gl_PointSize = 1.0;\n' +
 '  }\n';
 
 var flowFragmentShader = '' + 
