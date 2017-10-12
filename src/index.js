@@ -49,7 +49,13 @@ function update() {
       flowGl.setData(year, data);
     });
   }
+  if (typeof flowGl.buffers[(currentYear+1).toString()] == "undefined") {
+    flowGl.getJson(currentYear+1, function(year, data) {
+      flowGl.setData(year, data);
+    });
+  }  
   flowGl.draw(currentYear, mapMatrix, {'epoch': currentTime/1000.0});
+  flowGl.draw(currentYear+1, mapMatrix, {'epoch': currentTime/1000.0});
   timeSlider.animate();
 }
 
