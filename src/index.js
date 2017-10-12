@@ -49,7 +49,7 @@ function update() {
 }
 
 function initTimeSlider(opts) {
-  var startTime = new Date("1970-01-01").getTime();
+  var startTime = new Date("1984-01-01").getTime();
   var endTime = new Date("2016-12-31").getTime();
   if (typeof(opts) != "undefined") {
     if (opts.startTime) {
@@ -69,9 +69,9 @@ function initTimeSlider(opts) {
       return date.yyyymmdd();
     },
     animationRate: {
-      fast: 10,
-      medium: 20,
-      slow: 40
+      fast: 20,
+      medium: 40,
+      slow: 60
     }
   });  
   return timeSlider;
