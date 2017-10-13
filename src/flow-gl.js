@@ -56,14 +56,6 @@ var FlowGl = function FlowGl(gl) {
     this.gl = gl;
     this.program = createProgram(gl, flowVertexShader, flowFragmentShader);
     this.buffers = {};
-    /*
-    this.buffer = {
-        'numAttributes': 5,
-        'count': 0,
-        'buffer': null,
-        'ready': false
-    };
-    */
 }
 
 FlowGl.prototype.setData = function(year, data) {
@@ -134,7 +126,6 @@ FlowGl.prototype.getJson = function(year, callback) {
 
 
 FlowGl.prototype.setBuffer = function(year, data) {
-    this.buffers[year.toString()] = new Buffer(5);
     this.buffers[year.toString()].data = data;
     this.buffers[year.toString()].count = data.length / this.buffers[year.toString()].numAttributes;
     this.buffers[year.toString()].buffer = createBuffer(gl, data);   

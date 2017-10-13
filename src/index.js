@@ -45,11 +45,15 @@ function update() {
   var t = 1.0 - (end.getTime() - currentTime) / (end.getTime() - start.getTime());
   //centroidGl.draw(mapMatrix, {'t': t});
   if (typeof flowGl.buffers[currentYear.toString()] == "undefined") {
+    flowGl.buffers[currentYear.toString()] = new Buffer(5);
+
     flowGl.getJson(currentYear, function(year, data) {
       flowGl.setData(year, data);
     });
   }
   if (typeof flowGl.buffers[(currentYear+1).toString()] == "undefined") {
+    flowGl.buffers[(currentYear+1).toString()] = new Buffer(5);
+
     flowGl.getJson(currentYear+1, function(year, data) {
       flowGl.setData(year, data);
     });
@@ -121,6 +125,7 @@ function init() {
   flowGl.image.onload = function() {
     var year = 1984;
     flowGl.getJson(year, function(year, data) {
+      flowGl.buffers[year.toString()] = new Buffer(5);
       flowGl.setData(year, data);
     });
   }
