@@ -88,7 +88,8 @@ FlowGl.prototype.setData = function(year, data) {
 
     function doSomething(year, data) {
         var points = [];
-        var startDateMin = new Date((year - 1).toString() + '-9-1').getTime()/1000.;
+        var startDateMin = new Date((year - 1).toString() + '-1-1').getTime()/1000.;
+        //var startDateMin = new Date(year.toString() + '-1-1').getTime()/1000.;
         var startDateMax = new Date(year.toString() + '-11-1').getTime()/1000.;
         var endDateMin = new Date(year.toString() + '-1-31').getTime()/1000.;
         var endDateMax = new Date(year.toString() + '-12-31').getTime()/1000.;
