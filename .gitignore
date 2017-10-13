@@ -4,3 +4,4 @@ capture
 .ipynb_checkpoints/
 localconfig
 demo
+data/*json
