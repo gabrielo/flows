@@ -51,7 +51,7 @@ function update() {
       flowGl.setData(year, data);
     });
   }
-  if (typeof flowGl.buffers[(currentYear+1).toString()] == "undefined") {
+  if (typeof flowGl.buffers[(currentYear+1).toString()] == "undefined" && currentYear < 2016) {
     flowGl.buffers[(currentYear+1).toString()] = new Buffer(5);
 
     flowGl.getJson(currentYear+1, function(year, data) {
