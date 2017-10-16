@@ -7,6 +7,7 @@ var mapMatrix = new Float32Array(16);
 var pixelsToWebGLMatrix = new Float32Array(16);
 var gui;
 var timeSlider;
+var worker;
 
 var mapOptions = {
   zoom: 2,
@@ -46,17 +47,19 @@ function update() {
   //centroidGl.draw(mapMatrix, {'t': t});
   if (typeof flowGl.buffers[currentYear.toString()] == "undefined") {
     flowGl.buffers[currentYear.toString()] = new Buffer(5);
+    worker.postMessage({'year': currentYear});
 
-    flowGl.getJson(currentYear, function(year, data) {
-      flowGl.setData(year, data);
-    });
+    //flowGl.getJson(currentYear, function(year, data) {
+      //flowGl.setData(year, data);
+    //});
   }
   if (typeof flowGl.buffers[(currentYear+1).toString()] == "undefined" && currentYear < 2016) {
     flowGl.buffers[(currentYear+1).toString()] = new Buffer(5);
+    worker.postMessage({'year': currentYear+1});
 
-    flowGl.getJson(currentYear+1, function(year, data) {
-      flowGl.setData(year, data);
-    });
+//    flowGl.getJson(currentYear+1, function(year, data) {
+//      //flowGl.setData(year, data);
+//    });
   }  
   flowGl.draw(currentYear, mapMatrix, {'epoch': currentTime/1000.0});
   flowGl.draw(currentYear+1, mapMatrix, {'epoch': currentTime/1000.0});
@@ -129,6 +132,15 @@ function init() {
       flowGl.setData(year, data);
     });
   }
+
+  worker = new Worker('worker.js');
+  worker.onmessage = function(e) {
+    if (typeof e.data["year"] != "undefined") {
+      var year = e.data.year;
+      var array = e.data["array"];
+      flowGl.setBuffer(year, new Float32Array(array));    
+    }
+  };
 
   //gui = new dat.GUI();
   //gui.add(gtdGl, 'show0Casualties');
