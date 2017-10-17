@@ -109,7 +109,7 @@ FlowGl.prototype.setData = function(year, data) {
     var points = doSomething(year, data);
     flowGl.setBuffer(year, new Float32Array(points));
     var t1 = performance.now();
-    console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
+    //console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
 }
 
 FlowGl.prototype.getJson = function(year, callback) {
